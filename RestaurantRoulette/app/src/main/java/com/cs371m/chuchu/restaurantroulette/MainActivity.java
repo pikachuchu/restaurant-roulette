@@ -1,6 +1,7 @@
 package com.cs371m.chuchu.restaurantroulette;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,15 +11,32 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean parseInitialized = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        parseInit();
+
+        FloatingActionButton createButton = (FloatingActionButton) findViewById(R.id.createEvent);
+        final MainActivity that = this;
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(that, CreateEvent.class);
+                startActivityForResult(intent, 1);
+            }
+        });
 
         ListView listView = (ListView) findViewById(R.id.listView);
 
@@ -87,12 +105,24 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivityForResult(intent, 1);
             return true;
-        } else if (id == R.id.action_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, 1);
+        } else if (id == R.id.action_account) {
+            if (ParseUser.getCurrentUser() == null) {
+                Intent intent = new Intent(this, Login.class);
+                startActivityForResult(intent, 1);
+            } else {
+                Intent intent = new Intent(this, Account.class);
+                startActivityForResult(intent, 1);
+            }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void parseInit() {
+        if (!parseInitialized) {
+            Parse.initialize(this, "v5qViBKOMvGQO59OR4Y4nleFXXFxwCaQ4gA587uW", "kVozZCFPyRwL7dAZ1fl1WgIjyAvCXM9Be1hRWnzZ");
+            parseInitialized = true;
+        }
     }
 }
