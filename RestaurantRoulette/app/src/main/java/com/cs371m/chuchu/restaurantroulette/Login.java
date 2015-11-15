@@ -39,7 +39,7 @@ public class Login extends AppCompatActivity {
                 doToast("Logging in...");
                 String username = usernameEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
-                String validationError = LoginManager.validate(username, password, null);
+                String validationError = LoginManager.validate(username, null, password, null);
                 if (!validationError.equals("")) {
                     doToast(validationError);
                     return;

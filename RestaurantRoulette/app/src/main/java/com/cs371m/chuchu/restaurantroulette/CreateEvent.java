@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +19,14 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class CreateEvent extends AppCompatActivity {
 
@@ -68,19 +71,24 @@ public class CreateEvent extends AppCompatActivity {
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO: make sure all fields are present
+                ArrayList<String> attendees = new ArrayList<>();
+                String currUser = ParseUser.getCurrentUser().getUsername();
+                attendees.add(currUser);
                 ParseObject newEvent = new ParseObject("Event");
+                newEvent.put("host", currUser);
                 newEvent.put("restaurant", restaurant.getText().toString().trim());
                 newEvent.put("date", date.getText().toString().trim());
                 newEvent.put("time", time.getText().toString().trim());
-                newEvent.put("number", number.getText().toString().trim());
+                newEvent.put("number", Integer.parseInt(number.getText().toString().trim()));
                 newEvent.put("price", price.getText().toString().trim());
+                newEvent.put("attendees", attendees);
 
                 newEvent.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
-                        doToast(e.getMessage());
+                            doToast(e.getMessage());
                         } else {
                             doToast("Event successfully created!");
                         }
@@ -89,6 +97,30 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_show_events) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void doToast(String text) {
@@ -103,8 +135,8 @@ public class CreateEvent extends AppCompatActivity {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                Gson gson = new Gson();
-                String json = gson.toJson(place);
+                //Gson gson = new Gson();
+                //String json = gson.toJson(place);
 //                Place result = gson.fromJson(json, Place.class);
 
 

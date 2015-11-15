@@ -77,20 +77,9 @@ public class Account extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_toggle_view) {
-            Intent intent = new Intent(this, MapsActivity.class);
-            startActivityForResult(intent, 1);
-            return true;
-        } else if (id == R.id.action_account) {
-            if (ParseUser.getCurrentUser() == null) {
-                Intent intent = new Intent(this, Login.class);
-                startActivityForResult(intent, 1);
-            } else {
-                Intent intent = new Intent(this, Account.class);
-                startActivityForResult(intent, 1);
-            }
+        if (id == R.id.action_show_events) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
 

@@ -27,14 +27,16 @@ public class Register extends AppCompatActivity {
         final EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         final EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         final EditText passwordAgainEditText = (EditText) findViewById(R.id.passwordAgainEditText);
+        final EditText emailEditText = (EditText) findViewById(R.id.email);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = usernameEditText.getText().toString().trim();
+                String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
                 String passwordAgain = passwordAgainEditText.getText().toString().trim();
-                String validationError = LoginManager.validate(username, password, passwordAgain);
+                String validationError = LoginManager.validate(username, email, password, passwordAgain);
                 if (!validationError.equals("")) {
                     doToast(validationError);
                     return;
@@ -43,6 +45,7 @@ public class Register extends AppCompatActivity {
                 ParseUser newUser = new ParseUser();
                 newUser.setUsername(username);
                 newUser.setPassword(password);
+                newUser.setEmail(email);
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -74,7 +77,9 @@ public class Register extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_show_events) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
 

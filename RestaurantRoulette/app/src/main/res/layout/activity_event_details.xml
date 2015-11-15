@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".EventDetails">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Restaurant: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/restaurant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Host: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/host" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/date" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Time: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/time" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Attendees: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/attendees" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Max Number of People: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/maxPeople" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price: "
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:id="@+id/price" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="RSVP"
+                android:id="@+id/rsvpButton" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/cancelButton" />
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

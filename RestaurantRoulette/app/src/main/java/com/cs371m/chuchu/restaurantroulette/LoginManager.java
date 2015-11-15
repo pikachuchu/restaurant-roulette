@@ -7,14 +7,19 @@ import android.util.Patterns;
  */
 public class LoginManager {
 
-    public static String validate(String username, String password, String passwordAgain) {
+    public static String validate(String username, String email, String password, String passwordAgain) {
         StringBuilder result = new StringBuilder("Please ");
         boolean error = false;
 
         if (username.length() == 0) {
             result.append("enter a username");
             error = true;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
+        }
+
+        if (email != null && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (error) {
+                result.append(", and ");
+            }
             result.append("enter a valid email address");
             error = true;
         }

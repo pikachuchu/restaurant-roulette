@@ -4,84 +4,81 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean parseInitialized = false;
+    private ListView listView;
+    private ArrayList<HashMap<String,String>> eventsList;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        parseInit();
-
         FloatingActionButton createButton = (FloatingActionButton) findViewById(R.id.createEvent);
-        final MainActivity that = this;
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(that, CreateEvent.class);
-                startActivityForResult(intent, 1);
+                if (ParseUser.getCurrentUser() == null) {
+                    doToast("Please Login");
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, CreateEvent.class);
+                    startActivity(intent);
+                }
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        Button myEventsButton = (Button) findViewById(R.id.myEvents);
+        myEventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ParseUser.getCurrentUser() == null) {
+                    doToast("Please Login");
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, MyEvents.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-
-        HashMap<String,String> temp=new HashMap<String, String>();
-        temp.put("Host", "Ankit Karia");
-        temp.put("Restaurant", "Male");
-        temp.put("When?", "22");
-        temp.put("Type", "Unmarried");
-        temp.put("Price", "Unmarried");
-        temp.put("Distance", "Unmarried");
-        list.add(temp);
-
-        HashMap<String,String> temp2=new HashMap<String, String>();
-        temp2.put("Host", "Rajat Ghai");
-        temp2.put("Restaurant", "Male");
-        temp2.put("When?", "25");
-        temp2.put("Type", "Unmarried");
-        temp2.put("Price", "Unmarried");
-        temp2.put("Distance", "Unmarried");
-        list.add(temp2);
-
-        HashMap<String,String> temp3=new HashMap<String, String>();
-        temp3.put("Host", "Karina Kaif");
-        temp3.put("Restaurant", "Female");
-        temp3.put("When?", "31");
-        temp3.put("Type", "Unmarried");
-        temp3.put("Price", "Unmarried");
-        temp3.put("Distance", "Unmarried");
-        list.add(temp3);
-
-        ListViewAdapter adapter=new ListViewAdapter(this, list);
-        listView.setAdapter(adapter);
+        listView = (ListView) findViewById(R.id.listView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
-                int pos=position+1;
-                Toast.makeText(MainActivity.this, Integer.toString(pos)+" Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, EventDetails.class);
+                intent.putExtra("event", eventsList.get(position));
+                startActivity(intent);
             }
-
         });
+
+        fetchEvents();
     }
 
     @Override
@@ -99,9 +96,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_toggle_view) {
+        if (id == R.id.action_toggle_view) {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivityForResult(intent, 1);
             return true;
@@ -114,15 +109,69 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
             return true;
+        } else if (id == R.id.action_refresh) {
+            fetchEvents();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    protected void parseInit() {
-        if (!parseInitialized) {
-            Parse.initialize(this, "v5qViBKOMvGQO59OR4Y4nleFXXFxwCaQ4gA587uW", "kVozZCFPyRwL7dAZ1fl1WgIjyAvCXM9Be1hRWnzZ");
-            parseInitialized = true;
+    private void fetchEvents() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e != null) {
+                    Log.d("Events", e.getMessage());
+                } else {
+                    ArrayList<HashMap<String, String>> events = new ArrayList<>();
+                    for (ParseObject po : objects) {
+                        // only add events user is not yet attending and that have room
+                        // TODO: delete past events
+                        List<String> attendees = po.getList("attendees");
+                        if (attendees.size() == po.getInt("number")) {
+                            break;
+                        }
+                        boolean addObject = true;
+                        boolean checkUsername = ParseUser.getCurrentUser() != null;
+                        String username = "";
+                        if (checkUsername) {
+                            username = ParseUser.getCurrentUser().getUsername();
+                        }
+                        String attendeesStr = "";
+                        for (String attendee : attendees) {
+                            if (checkUsername && attendee.equals(username)) {
+                                addObject = false;
+                                break;
+                            }
+                            attendeesStr += attendee + ", ";
+                        }
+                        if (addObject) {
+                            HashMap<String, String> curr = new HashMap<>();
+                            curr.put("objectId", po.getObjectId());
+                            curr.put("host", po.getString("host"));
+                            curr.put("restaurant", po.getString("restaurant"));
+                            curr.put("date", po.getString("date"));
+                            curr.put("time", po.getString("time"));
+                            curr.put("price", po.getString("price"));
+                            curr.put("number", po.getString("number"));
+                            curr.put("attendees", attendeesStr.substring(0, attendeesStr.length() - 2));
+                            events.add(curr);
+                        }
+                    }
+                    ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, events);
+                    listView.setAdapter(adapter);
+                    eventsList = events;
+                }
+            }
+        });
+    }
+
+    public void doToast(String text) {
+        if (toast != null) {
+            toast.cancel();
         }
+        toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

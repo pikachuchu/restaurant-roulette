@@ -59,22 +59,21 @@ public class ListViewAdapter extends BaseAdapter{
 
             convertView=inflater.inflate(R.layout.column_row, null);
 
-            txtFirst=(TextView) convertView.findViewById(R.id.host);
-            txtSecond=(TextView) convertView.findViewById(R.id.restaurant);
+            txtFirst=(TextView) convertView.findViewById(R.id.restaurant);
+            txtSecond=(TextView) convertView.findViewById(R.id.date);
             txtThird=(TextView) convertView.findViewById(R.id.time);
-            txtFourth=(TextView) convertView.findViewById(R.id.type);
-            txtFifth=(TextView) convertView.findViewById(R.id.price);
-            txtSixth=(TextView) convertView.findViewById(R.id.distance);
+            txtFourth=(TextView) convertView.findViewById(R.id.price);
+            txtFifth=(TextView) convertView.findViewById(R.id.distance);
 
         }
 
         HashMap<String, String> map=list.get(position);
-        txtFirst.setText(map.get("Host"));
-        txtSecond.setText(map.get("Restaurant"));
-        txtThird.setText(map.get("When?"));
-        txtFourth.setText(map.get("Type"));
-        txtFifth.setText(map.get("Price"));
-        txtSixth.setText(map.get("Distance"));
+        txtFirst.setText(map.get("restaurant"));
+        txtSecond.setText(map.get("date"));
+        txtThird.setText(map.get("time"));
+        txtFourth.setText(map.get("price"));
+        // TODO: calculate distance
+        txtFifth.setText("1 mi");
 
         return convertView;
     }
