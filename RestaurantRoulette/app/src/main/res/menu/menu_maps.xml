@@ -12,4 +12,6 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_select" android:title="Filters"/>
+    <item android:id="@+id/action_account" android:title="Account"/>
+
 </menu>

@@ -1,0 +1,4 @@
+configurations.create("default")
+artifacts.add("default", file('gson-2.4.jar'))
+dependencies {
+}
