@@ -65,10 +65,6 @@
             android:name=".EventDetails"
             android:label="@string/title_activity_event_details" >
         </activity>
-        <activity
-            android:name=".MyEvents"
-            android:label="@string/title_activity_my_events" >
-        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -27,8 +28,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
-    private ArrayList<HashMap<String,String>> eventsList;
+    private ArrayList<HashMap<String,String>> nearbyEventsList;
+    private ArrayList<HashMap<String,String>> myEventsList;
     private Toast toast;
+    private boolean nearbyEventsDisplayed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +62,21 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, MyEvents.class);
-                    startActivity(intent);
+                    Button button = (Button) v;
+                    TextView title = (TextView) findViewById(R.id.title);
+                    if (nearbyEventsDisplayed) {
+                        ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, myEventsList);
+                        listView.setAdapter(adapter);
+                        button.setText("Nearby Events");
+                        title.setText("My Events");
+                        nearbyEventsDisplayed = false;
+                    } else {
+                        ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
+                        listView.setAdapter(adapter);
+                        button.setText("My Events");
+                        title.setText("Nearby Events");
+                        nearbyEventsDisplayed = true;
+                    }
                 }
             }
         });
@@ -73,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
                 Intent intent = new Intent(MainActivity.this, EventDetails.class);
-                intent.putExtra("event", eventsList.get(position));
+                if (nearbyEventsDisplayed) {
+                    intent.putExtra("event", nearbyEventsList.get(position));
+                } else {
+                    intent.putExtra("event", myEventsList.get(position));
+                }
                 startActivity(intent);
             }
         });
@@ -124,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 if (e != null) {
                     Log.d("Events", e.getMessage());
                 } else {
-                    ArrayList<HashMap<String, String>> events = new ArrayList<>();
+                    myEventsList = new ArrayList<>();
+                    nearbyEventsList = new ArrayList<>();
                     for (ParseObject po : objects) {
                         // only add events user is not yet attending and that have room
                         // TODO: delete past events
@@ -132,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         if (attendees.size() == po.getInt("number")) {
                             break;
                         }
-                        boolean addObject = true;
+                        boolean isMyEvent = false;
                         boolean checkUsername = ParseUser.getCurrentUser() != null;
                         String username = "";
                         if (checkUsername) {
@@ -141,27 +162,30 @@ public class MainActivity extends AppCompatActivity {
                         String attendeesStr = "";
                         for (String attendee : attendees) {
                             if (checkUsername && attendee.equals(username)) {
-                                addObject = false;
+                                isMyEvent = true;
                                 break;
                             }
                             attendeesStr += attendee + ", ";
                         }
-                        if (addObject) {
-                            HashMap<String, String> curr = new HashMap<>();
-                            curr.put("objectId", po.getObjectId());
-                            curr.put("host", po.getString("host"));
-                            curr.put("restaurant", po.getString("restaurant"));
-                            curr.put("date", po.getString("date"));
-                            curr.put("time", po.getString("time"));
-                            curr.put("price", po.getString("price"));
-                            curr.put("number", po.getString("number"));
+                        HashMap<String, String> curr = new HashMap<>();
+                        curr.put("objectId", po.getObjectId());
+                        curr.put("host", po.getString("host"));
+                        curr.put("restaurant", po.getString("restaurant"));
+                        curr.put("date", po.getString("date"));
+                        curr.put("time", po.getString("time"));
+                        curr.put("price", po.getString("price"));
+                        curr.put("number", po.getString("number"));
+                        if (!attendeesStr.equals("")) {
                             curr.put("attendees", attendeesStr.substring(0, attendeesStr.length() - 2));
-                            events.add(curr);
+                        }
+                        if (isMyEvent) {
+                            myEventsList.add(curr);
+                        } else {
+                            nearbyEventsList.add(curr);
                         }
                     }
-                    ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, events);
+                    ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
                     listView.setAdapter(adapter);
-                    eventsList = events;
                 }
             }
         });
