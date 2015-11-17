@@ -10,70 +10,51 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ListViewAdapter extends BaseAdapter{
+public class ListViewAdapter extends BaseAdapter {
 
     public ArrayList<HashMap<String, String>> list;
     Activity activity;
     TextView txtFirst;
     TextView txtSecond;
     TextView txtThird;
-    TextView txtFourth;
-    TextView txtFifth;
-    TextView txtSixth;
 
-    public ListViewAdapter(Activity activity,ArrayList<HashMap<String, String>> list){
+    public ListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
         super();
-        this.activity=activity;
-        this.list=list;
+        this.activity = activity;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return 0;
+        return position;
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-
-
-
         LayoutInflater inflater=activity.getLayoutInflater();
 
-        if(convertView == null){
+        if(convertView == null) {
+            convertView = inflater.inflate(R.layout.column_row, null);
 
-            convertView=inflater.inflate(R.layout.column_row, null);
-
-            txtFirst=(TextView) convertView.findViewById(R.id.restaurant);
-            txtSecond=(TextView) convertView.findViewById(R.id.date);
-            txtThird=(TextView) convertView.findViewById(R.id.time);
-            txtFourth=(TextView) convertView.findViewById(R.id.price);
-            txtFifth=(TextView) convertView.findViewById(R.id.distance);
-
+            txtFirst = (TextView) convertView.findViewById(R.id.restaurant);
+            txtSecond = (TextView) convertView.findViewById(R.id.datetime);
+            txtThird = (TextView) convertView.findViewById(R.id.distance);
         }
 
-        HashMap<String, String> map=list.get(position);
+        HashMap<String, String> map = list.get(position);
         txtFirst.setText(map.get("restaurant"));
-        txtSecond.setText(map.get("date"));
-        txtThird.setText(map.get("time"));
-        txtFourth.setText(map.get("price"));
-        // TODO: calculate distance
-        txtFifth.setText("1 mi");
+        txtSecond.setText(map.get("datetime"));
+        txtThird.setText(map.get("distance"));
 
         return convertView;
     }

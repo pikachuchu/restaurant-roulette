@@ -1,7 +1,15 @@
 package com.cs371m.chuchu.restaurantroulette;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -21,17 +30,24 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SortItemsDialog.SortItemsListener {
 
     private ListView listView;
     private ArrayList<HashMap<String,String>> nearbyEventsList;
     private ArrayList<HashMap<String,String>> myEventsList;
     private Toast toast;
-    private boolean nearbyEventsDisplayed = false;
+    private boolean nearbyEventsDisplayed = true;
+    private Button myEventsButton;
+    private TextView title;
+    protected final int CREATE_EVENTS_REQUEST = 333;
+    protected final int EVENT_DETAILS_REQUEST = 334;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(MainActivity.this, CreateEvent.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, CREATE_EVENTS_REQUEST);
                 }
             }
         });
 
-        Button myEventsButton = (Button) findViewById(R.id.myEvents);
+        title = (TextView) findViewById(R.id.title);
+        myEventsButton = (Button) findViewById(R.id.myEvents);
         myEventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Button button = (Button) v;
-                    TextView title = (TextView) findViewById(R.id.title);
                     if (nearbyEventsDisplayed) {
                         ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, myEventsList);
                         listView.setAdapter(adapter);
@@ -89,12 +105,13 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
                 Intent intent = new Intent(MainActivity.this, EventDetails.class);
+                intent.putExtra("isMyEvent", !nearbyEventsDisplayed);
                 if (nearbyEventsDisplayed) {
                     intent.putExtra("event", nearbyEventsList.get(position));
                 } else {
                     intent.putExtra("event", myEventsList.get(position));
                 }
-                startActivity(intent);
+                startActivityForResult(intent, EVENT_DETAILS_REQUEST);
             }
         });
 
@@ -118,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_toggle_view) {
             Intent intent = new Intent(this, MapsActivity.class);
+            intent.putExtra("nearbyEvents", nearbyEventsList);
+            intent.putExtra("myEvents", myEventsList);
+            intent.putExtra("nearbyEventsDisplayed", nearbyEventsDisplayed);
             startActivityForResult(intent, 1);
             return true;
         } else if (id == R.id.action_account) {
@@ -131,13 +151,19 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_refresh) {
             fetchEvents();
+        } else if (id == R.id.action_sort_by) {
+            SortItemsDialog sortItemsDialog = new SortItemsDialog();
+            sortItemsDialog.show(getFragmentManager(), "sort");
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void fetchEvents() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "Please wait...", "Fetching Events...");
+        progressDialog.setCancelable(true);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event")
+                .whereGreaterThan("datetime", new Date());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -147,12 +173,8 @@ public class MainActivity extends AppCompatActivity {
                     myEventsList = new ArrayList<>();
                     nearbyEventsList = new ArrayList<>();
                     for (ParseObject po : objects) {
-                        // only add events user is not yet attending and that have room
-                        // TODO: delete past events
                         List<String> attendees = po.getList("attendees");
-                        if (attendees.size() == po.getInt("number")) {
-                            break;
-                        }
+
                         boolean isMyEvent = false;
                         boolean checkUsername = ParseUser.getCurrentUser() != null;
                         String username = "";
@@ -161,34 +183,84 @@ public class MainActivity extends AppCompatActivity {
                         }
                         String attendeesStr = "";
                         for (String attendee : attendees) {
+                            attendeesStr += attendee + ", ";
                             if (checkUsername && attendee.equals(username)) {
                                 isMyEvent = true;
                                 break;
                             }
-                            attendeesStr += attendee + ", ";
+                        }
+                        // only add nearby events that have room
+                        if (!isMyEvent && attendees.size() == po.getInt("max_attendees")) {
+                            break;
                         }
                         HashMap<String, String> curr = new HashMap<>();
+
                         curr.put("objectId", po.getObjectId());
                         curr.put("host", po.getString("host"));
                         curr.put("restaurant", po.getString("restaurant"));
-                        curr.put("date", po.getString("date"));
-                        curr.put("time", po.getString("time"));
-                        curr.put("price", po.getString("price"));
-                        curr.put("number", po.getString("number"));
+                        curr.put("address", po.getString("address"));
+                        curr.put("latitude", String.valueOf(po.getDouble("latitude")));
+                        curr.put("longitude", String.valueOf(po.getDouble("longitude")));
+
+                        // get distance
+                        LatLng currLoc = LocationHelper.getCurrentLocation(MainActivity.this);
+                        float[] distance = new float[1];
+                        Location.distanceBetween(currLoc.latitude, currLoc.longitude,
+                                po.getDouble("latitude"), po.getDouble("longitude"), distance);
+                        double miles = distance[0] * 0.000621371;
+                        curr.put("distance", String.format("%.2f mi", miles));
+                        curr.put("doubleDistance", String.valueOf(miles));
+
+                        // get date
+                        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                        curr.put("datetime", df.format(po.getDate("datetime")));
+
+                        // get price
+                        String price = "";
+                        for (int i = 0; i < po.getInt("price"); i++) {
+                            price += "$";
+                        }
+                        curr.put("price", price);
+
+                        // get list of current attendees
+                        curr.put("maxAttendees", String.valueOf(po.getInt("max_attendees")));
                         if (!attendeesStr.equals("")) {
                             curr.put("attendees", attendeesStr.substring(0, attendeesStr.length() - 2));
                         }
+
+                        // add event to appropriate list
                         if (isMyEvent) {
                             myEventsList.add(curr);
                         } else {
                             nearbyEventsList.add(curr);
                         }
                     }
-                    ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
-                    listView.setAdapter(adapter);
+                    // sort lists by time
+                    onSelectSortItem("Time");
+
+                    setListViewAdapter();
+
+                    progressDialog.dismiss();
                 }
             }
         });
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CREATE_EVENTS_REQUEST) {
+                nearbyEventsDisplayed = false;
+                fetchEvents();
+                myEventsButton.setText("Nearby Events");
+                title.setText("My Events");
+            } else if (requestCode == EVENT_DETAILS_REQUEST) {
+                fetchEvents();
+            }
+        }
     }
 
     public void doToast(String text) {
@@ -197,5 +269,37 @@ public class MainActivity extends AppCompatActivity {
         }
         toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public void onSelectSortItem(String sortOption) {
+        String sortKey = "";
+
+        if (sortOption.equals("Distance")) {
+            sortKey = "doubleDistance";
+        } else if (sortOption.equals("Time")) {
+            sortKey = "datetime";
+        } else if (sortOption.equals("Name")) {
+            sortKey = "restaurant";
+        } else {
+            doToast("Cannot sort by: " + sortOption);
+            return;
+        }
+
+        EventsListComparator comparator = new EventsListComparator(sortKey);
+        Collections.sort(myEventsList, comparator);
+        Collections.sort(nearbyEventsList, comparator);
+        setListViewAdapter();
+    }
+
+    private void setListViewAdapter() {
+        // set listView adapter
+        if (nearbyEventsDisplayed) {
+            ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
+            listView.setAdapter(adapter);
+        } else {
+            ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, myEventsList);
+            listView.setAdapter(adapter);
+        }
     }
 }

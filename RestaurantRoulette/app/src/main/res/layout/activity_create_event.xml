@@ -17,22 +17,20 @@
             android:text="Create Event"
             android:id="@+id/textView" />
 
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Pick Restaurant"
-            android:id="@+id/PickRestaurantButton" />
-
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/restaurant"
-            android:hint="Enter restaurant name" />
+            android:editable="false"
+            android:focusable="false"
+            android:hint="Pick restaurant" />
 
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="Enter date"
+            android:editable="false"
+            android:focusable="false"
             android:id="@+id/date"
             android:inputType="date" />
 
@@ -40,21 +38,17 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="Enter time"
+            android:editable="false"
+            android:focusable="false"
             android:id="@+id/time"
             android:inputType="time" />
 
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="Enter number of people"
+            android:hint="Enter max attendees"
             android:id="@+id/numPeople"
             android:inputType="number" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/price"
-            android:hint="Enter price ($ to $$$$)" />
 
         <Button
             android:layout_width="150dp"

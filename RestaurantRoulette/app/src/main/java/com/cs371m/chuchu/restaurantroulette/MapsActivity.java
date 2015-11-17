@@ -1,17 +1,9 @@
 package com.cs371m.chuchu.restaurantroulette;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,13 +13,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseUser;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+    // TODO: make into fragment that replaces listView in MainActivity
 
     private GoogleMap mMap;
     public LatLng myPosition;
+    private ArrayList<HashMap<String, String>> myEventsList;
+    private ArrayList<HashMap<String, String>> nearbyEventsList;
+    private boolean nearbyEventsDisplayed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        Intent callingIntent = getIntent();
+        myEventsList = (ArrayList<HashMap<String, String>>) callingIntent.getSerializableExtra("myEvents");
+        nearbyEventsList = (ArrayList<HashMap<String, String>>) callingIntent.getSerializableExtra("nearbyEvents");
+        nearbyEventsDisplayed = callingIntent.getBooleanExtra("nearbyEventsDisplayed", true);
     }
 
     @Override
@@ -90,46 +94,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LatLng location = LocationHelper.getCurrentLocation(this);
+        myPosition = new LatLng(location.latitude, location.longitude);
+        mMap.addCircle(new CircleOptions().center(myPosition));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
 
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
+        mMap.setOnInfoWindowClickListener(this);
 
-        // Getting the name of the best provider
-        String provider = LocationManager.NETWORK_PROVIDER;
-
-        Location location;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            System.out.println("wrong permissions");
-
-            //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            location = null;
+        if (nearbyEventsDisplayed) {
+            setEventMarkers(nearbyEventsList);
         } else {
-            System.out.println("correct permissions");
-
-            location = locationManager.getLastKnownLocation(provider);
+            setEventMarkers(myEventsList);
         }
+    }
 
-//        System.out.println("=============position" + location.toString());
-
-        if (location != null) {
-            System.out.println("found a location");
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            myPosition = new LatLng(latitude, longitude);
-            mMap.addCircle(new CircleOptions().center(myPosition));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+    private void setEventMarkers(ArrayList<HashMap<String, String>> events) {
+        for (int i = 0; i < events.size(); i++) {
+            HashMap<String, String> event = events.get(i);
+            double latitude = Double.parseDouble(event.get("latitude"));
+            double longitude = Double.parseDouble(event.get("longitude"));
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .title(i + ": " + event.get("restaurant"))
+                    .snippet(event.get("datetime")));
         }
+    }
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.d("MapsActivity", "onInfoWindowClick");
+        int index = Integer.parseInt(marker.getTitle().split(":")[0]);
+        Intent intent = new Intent(this, EventDetails.class);
+        intent.putExtra("isMyEvent", !nearbyEventsDisplayed);
+        if (nearbyEventsDisplayed) {
+            intent.putExtra("event", nearbyEventsList.get(index));
+        } else {
+            intent.putExtra("event", myEventsList.get(index));
+        }
+        startActivity(intent);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -21,12 +22,14 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class EventDetails extends AppCompatActivity {
 
     private Toast toast;
+    private boolean isMyEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,27 +37,47 @@ public class EventDetails extends AppCompatActivity {
 
         TextView restaurant = (TextView) findViewById(R.id.restaurant);
         TextView host = (TextView) findViewById(R.id.host);
-        TextView date = (TextView) findViewById(R.id.date);
-        TextView time = (TextView) findViewById(R.id.time);
+        TextView distance = (TextView) findViewById(R.id.distance);
+        TextView address = (TextView) findViewById(R.id.address);
+        TextView datetime = (TextView) findViewById(R.id.datetime);
         TextView attendees = (TextView) findViewById(R.id.attendees);
-        TextView maxPeople = (TextView) findViewById(R.id.maxPeople);
+        TextView maxAttendees = (TextView) findViewById(R.id.maxAttendees);
         TextView price = (TextView) findViewById(R.id.price);
 
         Intent intent = getIntent();
         HashMap<String, String> event = (HashMap<String, String>) intent.getSerializableExtra("event");
         restaurant.append(event.get("restaurant"));
         host.append(event.get("host"));
-        date.append(event.get("date"));
-        time.append(event.get("time"));
-        maxPeople.append(event.get("number"));
-        price.append(event.get("price"));
+        datetime.append(event.get("datetime"));
+        address.append(event.get("address"));
+        distance.append(event.get("distance"));
+        maxAttendees.append(event.get("maxAttendees"));
+        if (event.get("attendees") == null || event.get("attendees").equals("")) {
+            attendees.append("No attendees");
+        } else {
+            attendees.append(event.get("attendees"));
+        }
+
+        if (event.get("price").equals("")) {
+            price.append("N/A");
+        } else {
+            price.append(event.get("price"));
+        }
 
 
-        attendees.append(event.get("attendees"));
-
+        // TODO: have unRSVP button, pass in extra in Intent?
         Button rsvpButton = (Button) findViewById(R.id.rsvpButton);
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        Button backButton = (Button) findViewById(R.id.backButton);
 
+        isMyEvent = getIntent().getBooleanExtra("isMyEvent", false);
+
+        if (isMyEvent) {
+            if (event.get("host").equals(ParseUser.getCurrentUser().getUsername())) {
+                rsvpButton.setText("Cancel Event");
+            } else {
+                rsvpButton.setText("Cancel RSVP");
+            }
+        }
         final String objectId = event.get("objectId");
 
         rsvpButton.setOnClickListener(new View.OnClickListener() {
@@ -72,21 +95,50 @@ public class EventDetails extends AppCompatActivity {
                         if (e != null) {
                             Log.d("EventDetails", e.getMessage());
                         } else {
-                            object.addUnique("attendees", ParseUser.getCurrentUser().getUsername());
+                            String username = ParseUser.getCurrentUser().getUsername();
+                            if (isMyEvent) {
+                                // delete event if host cancels
+                                if (object.get("host").equals(username)) {
+                                    object.deleteInBackground(new DeleteCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                doToast("Successfully canceled event!");
+                                                setResult(RESULT_OK);
+                                                finish();
+                                            }
+                                        }
+                                    });
+                                    return;
+                                }
+                                // otherwise, remove from attendees list
+                                List<String> toRemove = new ArrayList<>();
+                                toRemove.add(username);
+                                object.removeAll("attendees", toRemove);
+                            } else {
+                                object.addUnique("attendees", ParseUser.getCurrentUser().getUsername());
+                            }
                             object.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    doToast("Successfully RSVPed!");
-                                    finish();
+                                    if (e == null) {
+                                        if (isMyEvent) {
+                                            doToast("Successfully canceled RSVP!");
+                                        } else {
+                                            doToast("Successfully RSVPed!");
+                                        }
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
                                 }
                             });
-                        }
                     }
-                });
+                }
+            });
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

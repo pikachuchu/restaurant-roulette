@@ -1,17 +1,27 @@
 package com.cs371m.chuchu.restaurantroulette;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -20,40 +30,67 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 //import com.google.gson.Gson;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CreateEvent extends AppCompatActivity {
 
     Toast toast;
     int PLACE_PICKER_REQUEST = 1;
 
+    private EditText restaurant;
+    private EditText date;
+    private EditText time;
+    private EditText number;
+    private Place place;
+    private Date eventDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        final EditText restaurant = (EditText) findViewById(R.id.restaurant);
-        final EditText date = (EditText) findViewById(R.id.date);
-        final EditText time = (EditText) findViewById(R.id.time);
-        final EditText number = (EditText) findViewById(R.id.numPeople);
-        final EditText price = (EditText) findViewById(R.id.price);
+        restaurant = (EditText) findViewById(R.id.restaurant);
+        date = (EditText) findViewById(R.id.date);
+        time = (EditText) findViewById(R.id.time);
+        number = (EditText) findViewById(R.id.numPeople);
 
         Button createEventButton = (Button) findViewById(R.id.createEventButton);
-        Button pickRestaurantButton = (Button) findViewById(R.id.PickRestaurantButton);
 
-        pickRestaurantButton.setOnClickListener(new View.OnClickListener() {
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getFragmentManager(), "timePicker");
+            }
+        });
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getFragmentManager(), "datePicker");
+            }
+        });
+
+        restaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
+                    // set location to GDC
+                    builder.setLatLngBounds(new LatLngBounds.Builder().include(new LatLng(30.286373,-97.736638)).build());
                     startActivityForResult(builder.build(CreateEvent.this), PLACE_PICKER_REQUEST);
 
                 } catch (GooglePlayServicesRepairableException e) {
@@ -66,22 +103,29 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
-
-
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: make sure all fields are present
+                String validator = validateFields();
+                if (!validator.equals("valid")) {
+                    doToast(validator);
+                    return;
+                }
+                Log.d("CreateEvent", validator);
                 ArrayList<String> attendees = new ArrayList<>();
                 String currUser = ParseUser.getCurrentUser().getUsername();
                 attendees.add(currUser);
                 ParseObject newEvent = new ParseObject("Event");
                 newEvent.put("host", currUser);
-                newEvent.put("restaurant", restaurant.getText().toString().trim());
-                newEvent.put("date", date.getText().toString().trim());
-                newEvent.put("time", time.getText().toString().trim());
-                newEvent.put("number", Integer.parseInt(number.getText().toString().trim()));
-                newEvent.put("price", price.getText().toString().trim());
+                newEvent.put("restaurant", place.getName());
+                newEvent.put("place_id", place.getId());
+                newEvent.put("price", place.getPriceLevel());
+                newEvent.put("latitude", place.getLatLng().latitude);
+                newEvent.put("longitude", place.getLatLng().longitude);
+                newEvent.put("address", place.getAddress());
+                newEvent.put("datetime", eventDate);
+                newEvent.put("max_attendees", Integer.parseInt(number.getText().toString().trim()));
                 newEvent.put("attendees", attendees);
 
                 newEvent.saveInBackground(new SaveCallback() {
@@ -91,12 +135,60 @@ public class CreateEvent extends AppCompatActivity {
                             doToast(e.getMessage());
                         } else {
                             doToast("Event successfully created!");
+                            setResult(RESULT_OK);
+                            finish();
                         }
                     }
                 });
             }
         });
 
+    }
+
+    private String validateFields() {
+        StringBuilder result = new StringBuilder("Please ");
+        boolean error = false;
+        if (place == null) {
+            result.append("pick a restaurant");
+            error = true;
+        }
+        if (date.getText().toString().equals("")) {
+            if (error) {
+                result.append(", and ");
+            }
+            result.append("enter a date");
+            error = true;
+        }
+        if (time.getText().toString().equals("")) {
+            if (error) {
+                result.append(", and ");
+            }
+            result.append("enter a time");
+            error = true;
+        }
+        if (number.getText().toString().equals("")) {
+            if (error) {
+                result.append(", and ");
+            }
+            result.append("enter max attendees");
+            error = true;
+        }
+        if (!date.getText().toString().equals("") && !time.getText().toString().equals("")) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+                eventDate = dateFormat.parse(date.getText().toString() + " " + time.getText().toString());
+                if (eventDate.before(new Date())) {
+                    if (error) {
+                        result.append(", and ");
+                    }
+                    result.append("enter date in the future");
+                    error = true;
+                }
+            } catch (java.text.ParseException e) {
+                Log.d("CreateEvent", e.getMessage());
+            }
+        }
+        return error ? result.toString() : "valid";
     }
 
     @Override
@@ -132,22 +224,57 @@ public class CreateEvent extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                //Gson gson = new Gson();
-                //String json = gson.toJson(place);
-//                Place result = gson.fromJson(json, Place.class);
-
-
-                String restaurantName = (String) place.getName();
-                LatLng restaurantLocation = place.getLatLng();
-
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-            }
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            place = PlacePicker.getPlace(data, this);
+            restaurant.setText(place.getName());
         }
     }
 
+    // Date and Time Pickers
 
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            // Do something with the time chosen by the user
+            EditText timeText = (EditText) getActivity().findViewById(R.id.time);
+            String timeStr = String.format("%02d:%02d", hourOfDay, minute);
+            timeText.setText(timeStr);
+        }
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            EditText dateText = (EditText) getActivity().findViewById(R.id.date);
+            String dateStr = String.format("%02d/%02d/%04d", month + 1, day, year);
+            dateText.setText(dateStr);
+        }
+    }
 }

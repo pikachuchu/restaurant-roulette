@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Restaurant: "
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:padding="10dp"
             android:id="@+id/restaurant" />
 
@@ -22,47 +22,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Host: "
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:padding="10dp"
             android:id="@+id/host" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date: "
-            android:textSize="20dp"
+            android:text="Date and Time: "
+            android:textSize="16dp"
             android:padding="10dp"
-            android:id="@+id/date" />
+            android:id="@+id/datetime" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time: "
-            android:textSize="20dp"
+            android:text="Address: "
+            android:textSize="16dp"
             android:padding="10dp"
-            android:id="@+id/time" />
+            android:id="@+id/address" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance: "
+            android:textSize="16dp"
+            android:padding="10dp"
+            android:id="@+id/distance" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Attendees: "
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:padding="10dp"
             android:id="@+id/attendees" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Max Number of People: "
-            android:textSize="20dp"
+            android:text="Max Attendees: "
+            android:textSize="16dp"
             android:padding="10dp"
-            android:id="@+id/maxPeople" />
+            android:id="@+id/maxAttendees" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Price: "
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:padding="10dp"
             android:id="@+id/price" />
 
@@ -79,8 +87,8 @@
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:id="@+id/cancelButton" />
+                android:text="Back to Events"
+                android:id="@+id/backButton" />
 
         </LinearLayout>
     </LinearLayout>
