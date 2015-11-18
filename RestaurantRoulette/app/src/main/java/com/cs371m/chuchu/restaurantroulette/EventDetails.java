@@ -150,7 +150,9 @@ public class EventDetails extends AppCompatActivity {
         address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse("geo:" + event.get("latitude") + "," + event.get("longitude"));
+                Uri gmmIntentUri = Uri.parse("geo:?q="
+                        + event.get("latitude") + "," + event.get("longitude")
+                        + "(" + event.get("restaurant") + ")");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
