@@ -164,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
         final LatLng currLoc = LocationHelper.getCurrentLocation(MainActivity.this);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event")
-                .whereGreaterThan("datetime", new Date())
-                .whereNear("location", new ParseGeoPoint(currLoc.latitude, currLoc.longitude));
+                .whereGreaterThan("datetime", new Date());
+                //.whereNear("location", new ParseGeoPoint(currLoc.latitude, currLoc.longitude));
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
