@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 //import com.google.gson.Gson;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -121,8 +122,7 @@ public class CreateEvent extends AppCompatActivity {
                 newEvent.put("restaurant", place.getName());
                 newEvent.put("place_id", place.getId());
                 newEvent.put("price", place.getPriceLevel());
-                newEvent.put("latitude", place.getLatLng().latitude);
-                newEvent.put("longitude", place.getLatLng().longitude);
+                newEvent.put("location", new ParseGeoPoint(place.getLatLng().latitude, place.getLatLng().longitude));
                 newEvent.put("address", place.getAddress());
                 newEvent.put("datetime", eventDate);
                 newEvent.put("max_attendees", Integer.parseInt(number.getText().toString().trim()));
@@ -194,7 +194,7 @@ public class CreateEvent extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_create_event, menu);
         return true;
     }
 
@@ -208,6 +208,10 @@ public class CreateEvent extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_show_events) {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_account) {
+            Intent intent = new Intent(this, Account.class);
             startActivity(intent);
             return true;
         }

@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -160,10 +161,12 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
     }
 
     private void fetchEvents() {
-        final ProgressDialog progressDialog = ProgressDialog.show(this, "Please wait...", "Fetching Events...");
-        progressDialog.setCancelable(true);
+        final LatLng currLoc = LocationHelper.getCurrentLocation(MainActivity.this);
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event")
-                .whereGreaterThan("datetime", new Date());
+                .whereGreaterThan("datetime", new Date())
+                .whereNear("location", new ParseGeoPoint(currLoc.latitude, currLoc.longitude));
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -199,14 +202,17 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
                         curr.put("host", po.getString("host"));
                         curr.put("restaurant", po.getString("restaurant"));
                         curr.put("address", po.getString("address"));
-                        curr.put("latitude", String.valueOf(po.getDouble("latitude")));
-                        curr.put("longitude", String.valueOf(po.getDouble("longitude")));
 
-                        // get distance
-                        LatLng currLoc = LocationHelper.getCurrentLocation(MainActivity.this);
+                        // get location data
+                        ParseGeoPoint point = po.getParseGeoPoint("location");
+
+                        curr.put("latitude", String.valueOf(point.getLatitude()));
+                        curr.put("longitude", String.valueOf(point.getLongitude()));
+
                         float[] distance = new float[1];
                         Location.distanceBetween(currLoc.latitude, currLoc.longitude,
-                                po.getDouble("latitude"), po.getDouble("longitude"), distance);
+                                point.getLatitude(), point.getLongitude(), distance);
+
                         double miles = distance[0] * 0.000621371;
                         curr.put("distance", String.format("%.2f mi", miles));
                         curr.put("doubleDistance", String.valueOf(miles));
@@ -239,8 +245,6 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
                     onSelectSortItem("Time");
 
                     setListViewAdapter();
-
-                    progressDialog.dismiss();
                 }
             }
         });
