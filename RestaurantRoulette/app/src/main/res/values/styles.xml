@@ -2,7 +2,25 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="actionBarStyle">@style/MyActionBar</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/darkred</item>
+        <item name="titleTextStyle">@style/MyActionBarTitle</item>
+    </style>
+
+    <style name="MyActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MyActionBar.MenuTextStyle"
+        parent="style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/darkred</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
