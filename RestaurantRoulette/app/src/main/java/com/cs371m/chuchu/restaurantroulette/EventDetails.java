@@ -185,6 +185,10 @@ public class EventDetails extends AppCompatActivity {
             Intent intent = new Intent(this, Account.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_rate) {
+            Intent intent = new Intent(this, PastEvents.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

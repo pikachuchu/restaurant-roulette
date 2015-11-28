@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class Register extends AppCompatActivity {
@@ -32,7 +34,7 @@ public class Register extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString().trim();
+                final String username = usernameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
                 String passwordAgain = passwordAgainEditText.getText().toString().trim();
@@ -46,17 +48,35 @@ public class Register extends AppCompatActivity {
                 newUser.setUsername(username);
                 newUser.setPassword(password);
                 newUser.setEmail(email);
+
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
                             doToast(e.getMessage());
-                        } else {
-                            doToast("Successfully registered as " + ParseUser.getCurrentUser().getUsername());
-                            finish();
+                            return;
                         }
+                        ParseObject po = ParseObject.create("Rating");
+                        po.put("username", username);
+                        po.put("rating", 0.0);
+                        po.put("numRatings", 0);
+                        po.put("onTime", 0);
+                        po.put("late", 0);
+                        po.put("noShow", 0);
+                        po.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.d("Register", e.getMessage());
+                                    return;
+                                }
+                                doToast("Successfully registered as " + ParseUser.getCurrentUser().getUsername());
+                                finish();
+                            }
+                        });
                     }
                 });
+
             }
         });
 

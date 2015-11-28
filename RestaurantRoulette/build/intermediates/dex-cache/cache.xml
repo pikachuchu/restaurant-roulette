@@ -2,151 +2,235 @@
 <items version="2" >
 
     <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-82c67efd6ca70953431d24cd04457e3abdc72928.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-3d3fa9b16bc58ca85825296c30368ee59dd93a57.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-a5534453128690546a2cbecd2f783cd87570ccba.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-f8b7a4c4a6c3079cff769b677c1c5f901c17195c.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-79d69d1bbe06e92333a63065d8b3e04846567162.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-42c9fd8ae4cb1e1ac5daf03d77d0c3862fc6363a.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2e24e5f1b11170163028277de63f709e42525db4">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-017e03ad0fb437634cf91bb7a2da297104b14c12.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-daca08c2cf0b1e5e385a55522005d35cbe65861f.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-612bc2cbaf52a759c2fc46ac0fa9d4e7dc83cdf0.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-bbbb55f47c1a0a3366d9f3da652fa58b6279d489.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-0eec152c318df0eb420790d26ebe71ac312de189.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-074852dc2d1b52d30f3d0b02a5ecd86bfcc0b179.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.8.0/jars/classes.jar"
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.8.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="6e85edfc9b5346d216e50ccef1f8e825504144a3">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-6b17127fc939b3c4007bf0b8ce01c598c9081aa7.jar" />
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-e7706a5e61f4d51d32bbb3692a4cdb56438e9258.jar" />
     </item>
     <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-554f01f1293b24f3e72af61fde3e2dcf84edd817.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-518ac56637dc67ef0222bcccc18f86a51e9869f0.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-ed31bef959f2d0a6ad06fe862ca984b218b5536a.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-1ac7674c7dd8eea7d175bedddbc4376d2c984f31.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-201a2e02cc0fa8ce0d38ae530339892e3715f2c1.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/7.8.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-f042114ecba9d1c9d93d3ea5bc94c7827ac05d39.jar" />
-    </item>
-    <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.8.0/jars/classes.jar"
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.8.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="4a135d56554069e5d0ff80e3220e887e57146ee5">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-8447ce2381589a79c2034671d8e971611fbfe7a3.jar" />
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-67589a635084605846a0b2d3103a209b640496e2.jar" />
     </item>
     <item
-        jar="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.8.0/jars/classes.jar"
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-dd53f7aec58c1c7713c0bfd02f0d1a74b197b11e.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-74c28b579c7b7361a5e67c2531b8f20e8edaf791.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-9659c188eb2a5f929db4c1aeca6f3c4ba8e0bde6.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-d4c1887881e6acacb13e97a6f0ee2a95c76783a8.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-c3fc4ececc36a2c399b0fc8fa6b4826e9dcea0b5.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/gson-2.2.4-574b1a0984f35114544aa2a8a3a7e25724635fe8.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.3.0/8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c/bolts-tasks-1.3.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.3.0-65bf2423b3f3158c186db1874a145932f5aad5f5.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2e24e5f1b11170163028277de63f709e42525db4">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-375cd576130e5e10bcf773a97924f7de5a0279d3.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-21896b6bebd800e321554d84bce288d1a81a62e2.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-706640138108d7526bfa5d65ae582bc08e1851bf.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-c0d7d86758aa93f985fc0c1c644a169ae996e5ef.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-1d99440c8ad05b653578ce1e79b807e5e8d3667d.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-73ccd1e9d6b3854a0f1a64b6768066efd4b26833.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-73388e470f4a6f5e0a42bfedfdb211e8f4602bbe.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-b51a241d9b97ea209d92e8092c085d19bcbc4860.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-e39c0a33fa22c1342c38fbfae36e566f057b22b7.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.11.0/6592129dec2caa8791d322c7e4b6b7a30e8eadae/parse-android-1.11.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6592129dec2caa8791d322c7e4b6b7a30e8eadae">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/parse-android-1.11.0-b34b5d11ea458183d9b3320ab418f8445a5c1dc4.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.1-3494578fe140687093a156ee9be261644dddf27f.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-01f00b25ec517c490597878349e5b6e255cdab87.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.3.0/bc535105332645408ef5f1380215cc954b842178/bolts-applinks-1.3.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="bc535105332645408ef5f1380215cc954b842178">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/bolts-applinks-1.3.0-6e7dcff83b184fb06a6b7b1807e8e94a9833450d.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-2be0861533e95e24e37b282a5260fb9d35bd959f.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-104c7fd5f9dce5ade9c0a9102fee6e6203eb6ac0.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-d022fe927e3eaa175f56ec0d40ef8390944bd426.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-5556062639c5afb5723068a869344bbd54e448e7.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-14d3a2c9282ab6217317d4948910b8376e1a5045.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-0b381aae87cd37c38117e4e51e3ba077563dc592.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-2eb26884be595a0e980616176cc6ead10fc97f75.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.8.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="e23ea11124bb700eeddd4ab7aa848c615f493850">
-        <dex dex="/Users/chuchu/AndroidStudioProjects/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-e93926351a64a0e309d48aa2c8df8c305621e34a.jar" />
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-e53875d9102f87da88acbf31253142bd8f8cecd7.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-ad06c8325fe3a3c02ad7c8ca471ade31edc0179c.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-489d9bfd43df011c1410177faad39f1b7bb3a9e9.jar" />
+    </item>
+    <item
+        jar="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
+        <dex dex="/Users/chuchu/AndroidStudioProjects/temp/restaurant-roulette/RestaurantRoulette/app/build/intermediates/pre-dexed/debug/classes-528fba7a6a6ff02b56ac00ee23cb98cab0e8474a.jar" />
     </item>
 
 </items>

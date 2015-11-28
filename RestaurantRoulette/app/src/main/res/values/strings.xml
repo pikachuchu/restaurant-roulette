@@ -9,4 +9,6 @@
     <string name="title_activity_create_event">Create Event</string>
     <string name="title_activity_event_details">Event Details</string>
     <string name="title_activity_my_events">My Events</string>
+    <string name="title_activity_past_events">Past Events</string>
+    <string name="title_activity_rate_attendees">Rate Attendees</string>
 </resources>

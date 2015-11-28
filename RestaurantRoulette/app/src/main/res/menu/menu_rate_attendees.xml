@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools" tools:context=".RateAttendees">
+<item android:id="@+id/action_show_events" android:title="Events Map"
+    android:icon="@drawable/ic_map_black_24dp"
+    app:showAsAction="always|withText"/>
+<item android:id="@+id/action_account" android:title="Account"/>
+</menu>

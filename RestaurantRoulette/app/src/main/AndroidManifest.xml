@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name=".ListActivity"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
@@ -63,6 +63,14 @@
         <activity
             android:name=".EventDetails"
             android:label="@string/title_activity_event_details" >
+        </activity>
+        <activity
+            android:name=".PastEvents"
+            android:label="@string/title_activity_past_events" >
+        </activity>
+        <activity
+            android:name=".RateAttendees"
+            android:label="@string/title_activity_rate_attendees" >
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

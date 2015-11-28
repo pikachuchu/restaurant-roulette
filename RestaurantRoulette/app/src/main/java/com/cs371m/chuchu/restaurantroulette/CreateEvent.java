@@ -172,6 +172,29 @@ public class CreateEvent extends AppCompatActivity {
             }
             result.append("enter max attendees");
             error = true;
+        } else {
+            // formula to calculate world population based on date; from http://galen.metapath.org/popclk.html
+            long baseTime = new Date(100, 6, 1).getTime();
+            long currTime = new Date().getTime();
+            long adjtime = currTime - baseTime;
+            long pop = (long) Math.exp(22.528293835777973 + 4.0275867940663167699e-13*adjtime
+                    - 1.1020778551110890530e-25*adjtime*adjtime);
+            try {
+                int num = Integer.parseInt(number.getText().toString());
+                if (num > pop) {
+                    if (error) {
+                        result.append(", and ");
+                    }
+                    result.append("enter max attendees less than world population of " + pop);
+                    error = true;
+                }
+            } catch(NumberFormatException e) {
+                if (error) {
+                    result.append(", and ");
+                }
+                result.append("enter max attendees less than world population of " + pop);
+                error = true;
+            }
         }
         if (!date.getText().toString().equals("") && !time.getText().toString().equals("")) {
             try {
@@ -212,6 +235,10 @@ public class CreateEvent extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_account) {
             Intent intent = new Intent(this, Account.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_rate) {
+            Intent intent = new Intent(this, PastEvents.class);
             startActivity(intent);
             return true;
         }

@@ -1,30 +1,27 @@
 package com.cs371m.chuchu.restaurantroulette;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -33,14 +30,11 @@ import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SortItemsDialog.SortItemsListener {
-
-    private ListView listView;
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private ArrayList<HashMap<String,String>> nearbyEventsList;
     private ArrayList<HashMap<String,String>> myEventsList;
     private Toast toast;
@@ -50,10 +44,19 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
     protected final int CREATE_EVENTS_REQUEST = 333;
     protected final int EVENT_DETAILS_REQUEST = 334;
 
+    private GoogleMap mMap;
+    public LatLng myPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        fetchEvents();
 
         FloatingActionButton createButton = (FloatingActionButton) findViewById(R.id.createEvent);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -72,54 +75,8 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
 
         title = (TextView) findViewById(R.id.title);
         myEventsButton = (Button) findViewById(R.id.myEvents);
-        myEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ParseUser.getCurrentUser() == null) {
-                    doToast("Please Login");
-                    Intent intent = new Intent(MainActivity.this, Login.class);
-                    startActivity(intent);
-                } else {
-                    Button button = (Button) v;
-                    if (nearbyEventsDisplayed) {
-                        ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, myEventsList);
-                        listView.setAdapter(adapter);
-                        button.setText("Nearby Events");
-                        title.setText("My Events");
-                        nearbyEventsDisplayed = false;
-                    } else {
-                        ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
-                        listView.setAdapter(adapter);
-                        button.setText("My Events");
-                        title.setText("Nearby Events");
-                        nearbyEventsDisplayed = true;
-                    }
-                }
-            }
-        });
-
-        listView = (ListView) findViewById(R.id.listView);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
-            {
-                Intent intent = new Intent(MainActivity.this, EventDetails.class);
-                intent.putExtra("isMyEvent", !nearbyEventsDisplayed);
-                if (nearbyEventsDisplayed) {
-                    intent.putExtra("event", nearbyEventsList.get(position));
-                } else {
-                    intent.putExtra("event", myEventsList.get(position));
-                }
-                startActivityForResult(intent, EVENT_DETAILS_REQUEST);
-            }
-        });
-
-        fetchEvents();
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -135,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_toggle_view) {
-            Intent intent = new Intent(this, MapsActivity.class);
+            Intent intent = new Intent(this, ListActivity.class);
             intent.putExtra("nearbyEvents", nearbyEventsList);
             intent.putExtra("myEvents", myEventsList);
             intent.putExtra("nearbyEventsDisplayed", nearbyEventsDisplayed);
@@ -144,20 +101,77 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
         } else if (id == R.id.action_account) {
             if (ParseUser.getCurrentUser() == null) {
                 Intent intent = new Intent(this, Login.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             } else {
                 Intent intent = new Intent(this, Account.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             }
             return true;
         } else if (id == R.id.action_refresh) {
             fetchEvents();
-        } else if (id == R.id.action_sort_by) {
-            SortItemsDialog sortItemsDialog = new SortItemsDialog();
-            sortItemsDialog.show(getFragmentManager(), "sort");
+        } else if (id == R.id.action_rate) {
+            if (ParseUser.getCurrentUser() == null) {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, PastEvents.class);
+                startActivity(intent);
+            }
+            return true;
         }
 
+
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        LatLng location = LocationHelper.getCurrentLocation(this);
+        myPosition = new LatLng(location.latitude, location.longitude);
+        mMap.addCircle(new CircleOptions().center(myPosition));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    private void setEventMarkers(ArrayList<HashMap<String, String>> events) {
+        for (int i = 0; i < events.size(); i++) {
+            HashMap<String, String> event = events.get(i);
+            double latitude = Double.parseDouble(event.get("latitude"));
+            double longitude = Double.parseDouble(event.get("longitude"));
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .title(i + ": " + event.get("restaurant"))
+                    .snippet(event.get("datetime")));
+        }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.d("ListActivity", "onInfoWindowClick");
+        int index = Integer.parseInt(marker.getTitle().split(":")[0]);
+        Intent intent = new Intent(this, EventDetails.class);
+        intent.putExtra("isMyEvent", !nearbyEventsDisplayed);
+        if (nearbyEventsDisplayed) {
+            intent.putExtra("event", nearbyEventsList.get(index));
+        } else {
+            intent.putExtra("event", myEventsList.get(index));
+        }
+        startActivity(intent);
     }
 
     private void fetchEvents() {
@@ -241,16 +255,42 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
                             nearbyEventsList.add(curr);
                         }
                     }
-                    // sort lists by time
-                    onSelectSortItem("Time");
 
-                    setListViewAdapter();
+                mMap.clear();
+                if (nearbyEventsDisplayed) {
+                    setEventMarkers(nearbyEventsList);
+                } else {
+                    setEventMarkers(myEventsList);
+                }
+
+                myEventsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ParseUser.getCurrentUser() == null) {
+                            doToast("Please Login");
+                            Intent intent = new Intent(MainActivity.this, Login.class);
+                            startActivity(intent);
+                        } else {
+                            mMap.clear();
+                            Button button = (Button) v;
+                            if (nearbyEventsDisplayed) {
+                                button.setText("Nearby Events");
+                                title.setText("My Events");
+                                setEventMarkers(myEventsList);
+                                nearbyEventsDisplayed = false;
+                            } else {
+                                button.setText("My Events");
+                                title.setText("Nearby Events");
+                                setEventMarkers(nearbyEventsList);
+                                nearbyEventsDisplayed = true;
+                            }
+                        }
+                    }
+                });
                 }
             }
         });
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -275,35 +315,4 @@ public class MainActivity extends AppCompatActivity implements SortItemsDialog.S
         toast.show();
     }
 
-    @Override
-    public void onSelectSortItem(String sortOption) {
-        String sortKey = "";
-
-        if (sortOption.equals("Distance")) {
-            sortKey = "doubleDistance";
-        } else if (sortOption.equals("Time")) {
-            sortKey = "datetime";
-        } else if (sortOption.equals("Name")) {
-            sortKey = "restaurant";
-        } else {
-            doToast("Cannot sort by: " + sortOption);
-            return;
-        }
-
-        EventsListComparator comparator = new EventsListComparator(sortKey);
-        Collections.sort(myEventsList, comparator);
-        Collections.sort(nearbyEventsList, comparator);
-        setListViewAdapter();
-    }
-
-    private void setListViewAdapter() {
-        // set listView adapter
-        if (nearbyEventsDisplayed) {
-            ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, nearbyEventsList);
-            listView.setAdapter(adapter);
-        } else {
-            ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, myEventsList);
-            listView.setAdapter(adapter);
-        }
-    }
 }
