@@ -124,12 +124,7 @@ public class PastEvents extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == FINISH_RATING_RESULT) {
 
-            // delete event from past events
             HashMap<String, Object> ratedEvent = (HashMap<String, Object>) data.getSerializableExtra("event");
-            pastEvents.remove(ratedEvent);
-            listView.setAdapter(new PastEventsAdapter(PastEvents.this, pastEvents));
-            // TODO: remove event immediately from listView
-            listView.invalidateViews();
 
             ParseQuery<ParseObject> query = new ParseQuery<>("Event");
             query.getInBackground((String) ratedEvent.get("objectId"), new GetCallback<ParseObject>() {
@@ -143,6 +138,7 @@ public class PastEvents extends AppCompatActivity {
                     list.add(ParseUser.getCurrentUser().getUsername());
                     object.addAllUnique("ratedBy", list);
                     object.saveInBackground();
+                    fetchPastEvents();
                 }
             });
         }
